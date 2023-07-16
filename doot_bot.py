@@ -1,3 +1,4 @@
+import pathlib
 import discord
 from discord.ext import commands
 import asyncio
@@ -14,9 +15,9 @@ async def on_message(message):
 
 async def main():
 
-    # Get the token out of the secret token doc
-    with open("Token.txt", "r", encoding="utf-8") as tokenDoc:
-        TOKEN = tokenDoc.readline()
+    token_path = pathlib.Path(__file__).parent / "token.secret"
+    with open(token_path, "r", encoding="utf-8") as tf:
+        TOKEN = tf.readline()
 
 
     await bot.start(TOKEN)
