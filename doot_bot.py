@@ -10,7 +10,7 @@ bot = commands.Bot()
 async def on_message(message):
     for user in message.mentions:
         if user.id == 287938558407344129:
-            await message.add_reaction(random.choice(["\U00002B06", "\U00002B07"]))
+            await message.add_reaction(random.choice(["⬆️", "⬇️"]))
 
 
 async def main():
