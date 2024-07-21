@@ -1,27 +1,35 @@
-import pathlib
 import discord
 from discord.ext import commands
 import asyncio
 import random
+import logging
 
-bot = commands.Bot(command_prefix="")
+intents = discord.Intents.default()
+intents.message_content = True
+intents.reactions = True
+bot = commands.Bot(intents=intents, command_prefix="")
 
 @bot.event
-async def on_message(message):
-    for user in message.mentions:
+async def on_message(msg):
+    for user in msg.mentions:
         if user.id == 287938558407344129:
-            await message.add_reaction(random.choice(["⬆️", "⬇️"]))
+            return await msg.add_reaction(random.choice(["⬆️", "⬇️"]))
+
+
+@bot.event
+async def on_ready():
+    print(f"Logged in as {bot.user} (ID: {bot.user.id})")
+    print("-------------------------------------------")
 
 
 async def main():
+    discord.utils.setup_logging(level=logging.INFO, root=False)
 
-    token_path = pathlib.Path(__file__).parent / "token.secret"
-    with open(token_path, "r", encoding="utf-8") as tf:
-        TOKEN = tf.readline()
+    with open("Token.txt", "r", encoding="utf-8") as fp:
+        token = fp.read()
 
-
-    await bot.start(TOKEN)
+    async with bot:
+        await bot.start(token)
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    asyncio.run(main())
